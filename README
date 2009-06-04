@@ -1,0 +1,60 @@
+ActsAsSimilar
+=============
+
+I had a need to find items that were similar to an item. I looked at acts_as_recommendable, and while this was very
+nice plugin, it was too slow when working with large data sets. I also decided that the results I needed didn't need
+to be scientifically accurate, just a rough match. So I created this plugin to allow for a very elementary way to find items
+that are similar to the object you are working with. This works best when used with a has_many :through relationship.
+
+Basically all it is doing is looking for other objects of the same class, that have some related value.
+
+Example 1
+=========
+Look for similar playlists, using the videos as what defines similarity.
+This will look for all playlists that have a similar video as the playlist you are looking against.
+
+class Playlist
+  has_many :playlists_videos
+  has_many :videos, :through => :playlists_videos
+
+  acts_as_similar :videos
+end
+
+
+Example 2
+=========
+Look for similar playlists, using the title of the playlist as the similarity item.
+This will look for all playlists that have a similar title as the playlist you are looking against.
+
+class Playlist
+  has_many :playlists_videos
+  has_many :videos, :through => :playlists_videos
+
+  acts_as_similar :field => :title
+end
+
+
+Example 3
+=========
+Look for similar playlists, using the video_id of the playlists_videos as the similarity item.
+This will look for all playlists that have a similar video_id as the playlist you are looking against.
+
+class Playlist
+  has_many :playlists_videos
+  has_many :videos, :through => :playlists_videos
+
+  acts_as_similar :playlists_videos, :field => :video_id
+end
+
+
+Execute
+=========
+@playlist = Playlist.first
+@playlist.similar
+
+
+Notes
+=========
+This is a work in progress and is intended to provide very basic functionality.
+
+Copyright (c) 2009 [Randy Girard (randy_at_freezzo_dot_com, http://www.freezzo.com], released under the MIT license
